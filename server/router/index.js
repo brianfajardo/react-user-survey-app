@@ -5,6 +5,8 @@ const passport = require('passport')
 // Scope specifies what access we want from users' Google account.
 
 const router = (app) => {
+
+  // Authentication
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
   app.get('/auth/google/callback', passport.authenticate('google'))
 }
