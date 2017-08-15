@@ -3,6 +3,7 @@
     "rules": {
         "semi": "off",
         "no-console": "off",
-        "eol-last": "off"
+        "eol-last": "off",
+        "padded-blocks": "off"
     }
 }
