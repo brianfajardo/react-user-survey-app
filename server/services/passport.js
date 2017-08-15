@@ -3,10 +3,21 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const mongoose = require('mongoose')
 const { googleClientID, googleClientSecret } = require('../configs/googleOauthConfig')
 
-// Fetching the model class from mongoose by
-// providing only one argument to model method.
+// User model class reference
 
 const User = mongoose.model('User')
+
+// After fetching the user model instance from database
+// (Mongo user ID), serialize user.id into a cookie.
+
+passport.serializeUser((user, done) => done(null, user.id))
+
+// Deserialize cookie, take id and return a user
+
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then(user => done(null, user))
+})
 
 // Google Strategy docs: https://github.com/jaredhanson/passport-google-oauth2
 

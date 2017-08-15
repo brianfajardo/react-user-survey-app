@@ -1,19 +1,32 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const { mongoURI } = require('./configs/mLabConfig')
+const cookieSession = require('cookie-session')
+const passport = require('passport')
+
 const router = require('./router')
+const { mongoURI } = require('./configs/mLabConfig')
+const { cookieKey } = require('./configs/cookieKey')
 require('./models/User')
 require('./services/passport')
 
 // Heroku deployment checklist:
 // 1. Environment variables set
-// 2. Node and NPM version provided in package.json as engines
-// 3. Start script in package.json
+// 2. Node and NPM version engines provided
+// 3. Start script
 
 mongoose.connect(mongoURI)
 
 const app = express()
 const PORT = process.env.PORT || '8000'
+
+app.use(cookieSession({
+  // 30 days converted to milliseconds
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  keys: [cookieKey],
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 router(app)
 
