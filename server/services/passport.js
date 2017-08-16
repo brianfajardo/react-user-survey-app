@@ -1,7 +1,7 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const mongoose = require('mongoose')
-const { googleClientID, googleClientSecret } = require('../configs/devKeys')
+const { googleClientID, googleClientSecret } = require('../configs/keys')
 
 // User model class reference
 

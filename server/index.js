@@ -4,7 +4,7 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 
 const router = require('./router')
-const { mongoURI, cookieKey } = require('./configs/devKeys')
+const { mongoURI, cookieKey } = require('./configs/keys')
 require('./models/User')
 require('./services/passport')
 
