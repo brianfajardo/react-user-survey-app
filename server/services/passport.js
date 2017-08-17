@@ -14,9 +14,9 @@ passport.serializeUser((user, done) => done(null, user.id))
 
 // Deserialize cookie, take id and return a user
 
-passport.deserializeUser((id, done) => {
-  User.findById(id)
-    .then(user => done(null, user))
+passport.deserializeUser(async (id, done) => {
+  const user = await User.findById(id)
+  done(null, user)
 })
 
 // Google Strategy docs: https://github.com/jaredhanson/passport-google-oauth2
@@ -28,16 +28,13 @@ passport.use(new GoogleStrategy(
     callbackURL: '/auth/google/callback',
     proxy: true,
   },
-  (accessToken, refreshToken, profile, done) => {
-    User.findOne({ googleID: profile.id })
-      .then((existingUser) => {
-        if (existingUser) {
-          done(null, existingUser)
-        } else {
-          User
-            .create({ googleID: profile.id })
-            .then(newUser => done(null, newUser))
-        }
-      })
+  async (accessToken, refreshToken, profile, done) => {
+    const existingUser = await User.findOne({ googleID: profile.id })
+    if (existingUser) {
+      done(null, existingUser)
+    } else {
+      const newUser = await User.create({ googleID: profile.id })
+      done(null, newUser)
+    }
   },
 ))
