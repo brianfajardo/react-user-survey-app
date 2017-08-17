@@ -7,6 +7,7 @@
         "eol-last": "off",
         "padded-blocks": "off",
         "no-trailing-spaces": "off",
-        "comma-dangle":"off"
+        "comma-dangle":"off",
+        "import/prefer-default-export": "off"
     }
 }

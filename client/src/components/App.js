@@ -1,5 +1,24 @@
 import React from 'react'
+import { BrowserRouter, Route } from 'react-router-dom'
 
-const App = () => <h1>Hello developer!</h1>
+import HeaderContainer from '../containers/HeaderContainer'
+
+// Dummy components
+const Landing = () => <h1>Landing page</h1>
+const Dashboard = () => <h1>Dashboard</h1>
+const Survey = () => <h1>Create new survey</h1>
+
+const App = () => (
+  <div className="container">
+    <BrowserRouter>
+      <div>
+        <HeaderContainer />
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/surveys" component={Dashboard} />
+        <Route path="/surveys/create" component={Survey} />
+      </div>
+    </BrowserRouter >
+  </div>
+)
 
 export default App
