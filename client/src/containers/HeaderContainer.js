@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import * as actions from '../actions'
 
@@ -17,7 +18,7 @@ class HeaderContainer extends Component {
       case false:
         return <a href="/auth/google">Sign in with Google+</a>
       default:
-        return <a>Logout</a>
+        return <a href="/api/logout">Logout</a>
     }
   }
 
@@ -25,7 +26,12 @@ class HeaderContainer extends Component {
     return (
       <nav>
         <div className="nav-wrapper">
-          <a href="/" className="brand-logo left">React Surveys</a>
+          <Link
+            to={this.props.auth ? '/surveys' : '/'}
+            className="brand-logo left"
+          >
+            React Surveys
+          </Link>
           <ul className="right">
             <li>{this.renderLogin()}</li>
           </ul>
