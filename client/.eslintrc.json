@@ -6,6 +6,7 @@
         "no-console": "off",
         "eol-last": "off",
         "padded-blocks": "off",
-        "no-trailing-spaces": "off"
+        "no-trailing-spaces": "off",
+        "comma-dangle":"off"
     }
 }
