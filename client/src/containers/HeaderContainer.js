@@ -10,13 +10,24 @@ class HeaderContainer extends Component {
     this.props.fetchUser()
   }
 
+  renderLogin() {
+    switch (this.props.auth) {
+      case null:
+        break
+      case false:
+        return <a href="/auth/google">Sign in with Google+</a>
+      default:
+        return <a>Logout</a>
+    }
+  }
+
   render() {
     return (
       <nav>
         <div className="nav-wrapper">
           <a href="/" className="brand-logo left">React Surveys</a>
           <ul className="right">
-            <li><a href="/auth/google">Login with Google+</a></li>
+            <li>{this.renderLogin()}</li>
           </ul>
         </div>
       </nav>
@@ -24,8 +35,18 @@ class HeaderContainer extends Component {
   }
 }
 
+const mapStateToProps = ({ auth }) => ({ auth })
+
 HeaderContainer.propTypes = {
-  fetchUser: PropTypes.func.isRequired
+  fetchUser: PropTypes.func.isRequired,
+  auth: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string
+  ])
 }
 
-export default connect(null, actions)(HeaderContainer)
+HeaderContainer.defaultProps = {
+  auth: null
+}
+
+export default connect(mapStateToProps, actions)(HeaderContainer)
