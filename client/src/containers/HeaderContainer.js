@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import StripePayment from '../components/StripePayment'
 import * as actions from '../actions'
 
 class HeaderContainer extends Component {
@@ -12,13 +13,19 @@ class HeaderContainer extends Component {
   }
 
   renderLogin() {
-    switch (this.props.auth) {
+    const { auth, handleStripeToken } = this.props
+    switch (auth) {
       case null:
         break
       case false:
-        return <a href="/auth/google">Sign in with Google+</a>
+        return <li><a href="/auth/google">Login with Google+</a></li>
       default:
-        return <a href="/api/logout">Logout</a>
+        return [
+          <li key="1">
+            <StripePayment handleStripeToken={handleStripeToken} />
+          </li>,
+          <li key="2"><a href="/api/logout">Logout</a></li>
+        ]
     }
   }
 
@@ -33,8 +40,7 @@ class HeaderContainer extends Component {
             React Surveys
           </Link>
           <ul className="right">
-            {this.props.auth && <li><a>Add Credits</a></li>}
-            <li>{this.renderLogin()}</li>
+            {this.renderLogin()}
           </ul>
         </div>
       </nav>
@@ -53,7 +59,8 @@ HeaderContainer.propTypes = {
   auth: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string
-  ])
+  ]),
+  handleStripeToken: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, actions)(HeaderContainer)

@@ -8,6 +8,7 @@
         "padded-blocks": "off",
         "no-trailing-spaces": "off",
         "comma-dangle":"off",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "react/prefer-stateless-function": "off"
     }
 }
