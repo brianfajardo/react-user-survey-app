@@ -33,6 +33,7 @@ class HeaderContainer extends Component {
             React Surveys
           </Link>
           <ul className="right">
+            {this.props.auth && <li><a>Add Credits</a></li>}
             <li>{this.renderLogin()}</li>
           </ul>
         </div>
@@ -43,16 +44,16 @@ class HeaderContainer extends Component {
 
 const mapStateToProps = ({ auth }) => ({ auth })
 
+HeaderContainer.defaultProps = {
+  auth: null
+}
+
 HeaderContainer.propTypes = {
   fetchUser: PropTypes.func.isRequired,
   auth: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string
   ])
-}
-
-HeaderContainer.defaultProps = {
-  auth: null
 }
 
 export default connect(mapStateToProps, actions)(HeaderContainer)
