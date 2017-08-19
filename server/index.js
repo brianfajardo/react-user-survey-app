@@ -4,7 +4,8 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 
-const router = require('./router')
+const authenticationRoutes = require('./routes/authenticationRoutes')
+const billingRoutes = require('./routes/billingRoutes')
 const { mongoURI, cookieKey } = require('./configs/keys')
 require('./models/User')
 require('./services/passport')
@@ -30,6 +31,7 @@ app.use(cookieSession({
 app.use(passport.initialize())
 app.use(passport.session())
 
-router(app)
+authenticationRoutes(app)
+billingRoutes(app)
 
 app.listen(PORT, () => console.log(`Node server listening on port ${PORT}`))
