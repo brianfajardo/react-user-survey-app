@@ -24,7 +24,7 @@ class HeaderContainer extends Component {
           <li key="1">
             <StripePayment handleStripeToken={handleStripeToken} />
           </li>,
-          <li key="2"><a href="/api/logout">Logout</a></li>
+          <li key="2"><a href="/auth/logout">Logout</a></li>
         ]
     }
   }

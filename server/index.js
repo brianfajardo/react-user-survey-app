@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cookieSession = require('cookie-session')
 const passport = require('passport')
+const bodyParser = require('body-parser')
 
 const router = require('./router')
 const { mongoURI, cookieKey } = require('./configs/keys')
@@ -18,12 +19,14 @@ mongoose.connect(mongoURI)
 const app = express()
 const PORT = process.env.PORT || '8000'
 
+// Middleware
+
+app.use(bodyParser.json())
 app.use(cookieSession({
   // 30 days converted to milliseconds
   maxAge: 30 * 24 * 60 * 60 * 1000,
   keys: [cookieKey],
 }))
-
 app.use(passport.initialize())
 app.use(passport.session())
 
