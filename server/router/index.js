@@ -2,6 +2,8 @@ const passport = require('passport')
 const { stripeSecretKey } = require('../configs/keys')
 const stripe = require('stripe')(stripeSecretKey)
 
+const requireLogin = require('../middleware/requireLogin')
+
 // There exists an internal strategy which connects
 // the first authenticate argument to the GoogleStrategy in services/passport.
 // Scope specifies what access we want from users' Google account.
@@ -23,14 +25,10 @@ const router = (app) => {
   })
 
   // Payments and billings
-  app.post('/payments/stripe', async (req, res) => {
-    const { user } = req
-
-    if (!user) {
-      return res.send({ error: 'You must be signed in with Google to make a purchase.' }).status(401)
-    }
+  app.post('/payments/stripe', requireLogin, async (req, res) => {
 
     // Stripe charge
+    const { user } = req
     const token = req.body.id
     await stripe.charges.create({
       amount: 500,
@@ -42,7 +40,6 @@ const router = (app) => {
     // Adding paid credits to the user's instance.
     user.credits += 5
     const updatedUser = await user.save()
-
     res.send(updatedUser).status(200)
   })
 }
