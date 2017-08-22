@@ -7,7 +7,9 @@ const bodyParser = require('body-parser')
 const { mongoURI, cookieKey } = require('./configs/keys')
 const authenticationRoutes = require('./routes/authenticationRoutes')
 const billingRoutes = require('./routes/billingRoutes')
+const surveyRoutes = require('./routes/surveyRoutes')
 require('./models/User')
+require('./models/Survey')
 require('./services/passport')
 
 // Heroku deployment checklist:
@@ -33,6 +35,7 @@ app.use(passport.session())
 
 authenticationRoutes(app)
 billingRoutes(app)
+surveyRoutes(app)
 
 // In production, if a request does not match in any of the above
 // routes, attempt to find routes in main.js that contains the
