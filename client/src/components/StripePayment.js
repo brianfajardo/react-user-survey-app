@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 // Test mode Stripe provided Visa #: 4242 4242 4242 4242
 // token prop represents the callback function after Swipe processes the payment.
+// In production, REACT_APP_STRIPE_PUBLISHABLE_KEY set in Heroku env variables.
 
 const StripePayment = ({ handleStripeToken }) => (
   <StripeCheckout
