@@ -24,7 +24,8 @@ class HeaderContainer extends Component {
           <li key="1">
             <StripePayment handleStripeToken={handleStripeToken} />
           </li>,
-          <li key="2"><a href="/auth/logout">Logout</a></li>
+          <li key="2">Credits: {auth.credits}</li>,
+          <li key="3"><a href="/auth/logout">Logout</a></li>
         ]
     }
   }
@@ -56,10 +57,10 @@ HeaderContainer.defaultProps = {
 
 HeaderContainer.propTypes = {
   fetchUser: PropTypes.func.isRequired,
-  auth: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string
-  ]),
+  auth: PropTypes.shape({
+    googleID: PropTypes.string,
+    credits: PropTypes.number
+  }),
   handleStripeToken: PropTypes.func.isRequired
 }
 

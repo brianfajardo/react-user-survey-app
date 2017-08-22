@@ -4,9 +4,9 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 
+const { mongoURI, cookieKey } = require('./configs/keys')
 const authenticationRoutes = require('./routes/authenticationRoutes')
 const billingRoutes = require('./routes/billingRoutes')
-const { mongoURI, cookieKey } = require('./configs/keys')
 require('./models/User')
 require('./services/passport')
 
@@ -33,5 +33,16 @@ app.use(passport.session())
 
 authenticationRoutes(app)
 billingRoutes(app)
+
+// In production, if a request does not match in any of the above
+// routes, attempt to find routes in main.js that contains the
+// React-Router routes. If route is still not found, Express
+// will return index.html back to the client.
+
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path')
+  app.use(express.static('../client/build'))
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html')))
+}
 
 app.listen(PORT, () => console.log(`Node server listening on port ${PORT}`))
