@@ -3,8 +3,8 @@ const helper = sendgrid.mail
 
 const { sendGridKey } = require('../configs/keys')
 
-// Sendgrid Node.js documentation:
-// https://github.com/sendgrid/sendgrid-nodejs/blob/master/USAGE.md
+// Sendgrid Node.js Mailer class documentation:
+// https://github.com/sendgrid/sendgrid-nodejs#without-mail-helper-class
 
 class Mailer extends helper.Mail {
 
@@ -12,7 +12,7 @@ class Mailer extends helper.Mail {
     super()
 
     this.sendgridApi = sendgrid(sendGridKey)
-    this.fromEmail = new helper.Email('no-reply@test.com')
+    this.from_email = new helper.Email('no-reply@sendgrid-test.com')
     this.subject = subject
     this.body = new helper.Content('text/html', content)
     this.recipients = this.formatAddresses(recipients)
@@ -40,12 +40,12 @@ class Mailer extends helper.Mail {
   }
 
   async send() {
-    const request = await this.sendgridApi.emptyRequest({
+    const request = this.sendgridApi.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
       body: this.toJSON(),
     })
-    const response = this.sendgridApi.API(request)
+    const response = await this.sendgridApi.API(request)
     return response
   }
 }

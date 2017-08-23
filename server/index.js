@@ -18,6 +18,7 @@ const surveyRoutes = require('./routes/surveyRoutes')
 // 3. Start script
 
 mongoose.connect(mongoURI)
+mongoose.Promise = global.Promise
 
 const app = express()
 const PORT = process.env.PORT || '8000'

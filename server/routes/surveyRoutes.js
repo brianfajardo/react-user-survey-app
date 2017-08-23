@@ -2,15 +2,19 @@ const mongoose = require('mongoose')
 const requireLogin = require('../middleware/requireLogin')
 const requireCredits = require('../middleware/requireCredits')
 
+const Survey = mongoose.model('survey')
 const Mailer = require('../services/Mailer')
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
 const surveyRoutes = (app) => {
 
+  app.get('/surveys/thanks', (req, res) => res.send('Thank you. We appreciate your feedback! 😄').status(200))
+
   // Create a new survey with the use of Mailer
   // class which extends Sendgrip provided methods and API.
 
-  app.post('/surveys/new', requireLogin, requireCredits, (req, res) => {
+  app.post('/surveys/new', requireLogin, requireCredits, async (req, res) => {
+    const { user } = req
     const { title, subject, body, recipients } = req.body
 
     // Transform the string list of emails to an array of objects.
@@ -25,9 +29,18 @@ const surveyRoutes = (app) => {
       dateSent: Date.now(),
     })
 
-    // Initializing survey and emails to be sent out to end users.
+    // Initialize survey details with survey template.
     const mailer = new Mailer(survey, surveyTemplate(survey))
-    mailer.send()
+
+    try {
+      await mailer.send()
+      await survey.save()
+      user.credits -= 1
+      const updatedUser = await user.save()
+      res.send(updatedUser).status(200)
+    } catch (err) {
+      res.send(err).status(422)
+    }
   })
 }
 
