@@ -4,13 +4,13 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 
+require('./models/User')
+require('./models/Survey')
+require('./services/passport')
 const { mongoURI, cookieKey } = require('./configs/keys')
 const authenticationRoutes = require('./routes/authenticationRoutes')
 const billingRoutes = require('./routes/billingRoutes')
 const surveyRoutes = require('./routes/surveyRoutes')
-require('./models/User')
-require('./models/Survey')
-require('./services/passport')
 
 // Heroku deployment checklist:
 // 1. Environment variables set

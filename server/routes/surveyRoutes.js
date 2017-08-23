@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 const requireLogin = require('../middleware/requireLogin')
 const requireCredits = require('../middleware/requireCredits')
 
-const Survey = mongoose.model('survey')
 const Mailer = require('../services/Mailer')
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
 const surveyRoutes = (app) => {
 
-  // Create new survey
+  // Create a new survey with the use of Mailer
+  // class which extends Sendgrip provided methods and API.
 
   app.post('/surveys/new', requireLogin, requireCredits, (req, res) => {
     const { title, subject, body, recipients } = req.body
