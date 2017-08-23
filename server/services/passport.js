@@ -5,7 +5,7 @@ const { googleClientID, googleClientSecret } = require('../configs/keys')
 
 // User model class reference
 
-const User = mongoose.model('User')
+const User = mongoose.model('user')
 
 // After fetching the user model instance from database
 // (Mongo user ID), serialize user.id into a cookie.

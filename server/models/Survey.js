@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const { Schema } = mongoose
-const RecipientSchema = require('./Recipient')
+const recipientSchema = require('./Recipient')
 
-const SurveyModel = new Schema({
+const surveySchema = new Schema({
   title: String,
   subject: String,
   body: String,
-  recipients: [RecipientSchema],
+  recipients: [recipientSchema],
   yesCount: {
     type: Number,
     default: 0,
@@ -18,12 +18,12 @@ const SurveyModel = new Schema({
   },
   _user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
   },
   dateSent: Date,
   latestResponse: Date,
 })
 
-const Survey = mongoose.model('survey', SurveyModel)
+const Survey = mongoose.model('survey', surveySchema)
 
 module.exports = Survey

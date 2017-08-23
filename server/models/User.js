@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 
 const { Schema } = mongoose
-const Survey = require('./Survey')
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
   googleID: {
     type: String,
     required: true,
@@ -12,9 +11,8 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
-  surveys: [Survey],
 })
 
-const User = mongoose.model('User', UserSchema)
+const User = mongoose.model('user', userSchema)
 
 module.exports = User
