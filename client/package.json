@@ -9,12 +9,13 @@
     "/payments/stripe": {
       "target": "http://localhost:8000"
     },
-    "/surveys/*": {
+    "/surveys/new": {
       "target": "http://localhost:8000"
     }
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "eslint-plugin-react": "^7.3.0",
     "materialize-css": "^0.100.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
@@ -24,8 +25,8 @@
     "react-scripts": "1.0.11",
     "react-stripe-checkout": "^2.6.3",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "eslint-plugin-react": "^7.3.0"
+    "redux-form": "^7.0.3",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "client": "react-scripts start",

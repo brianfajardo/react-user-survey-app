@@ -57,10 +57,10 @@ HeaderContainer.defaultProps = {
 
 HeaderContainer.propTypes = {
   fetchUser: PropTypes.func.isRequired,
-  auth: PropTypes.shape({
-    googleID: PropTypes.string,
-    credits: PropTypes.number
-  }),
+  auth: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object
+  ]),
   handleStripeToken: PropTypes.func.isRequired
 }
 

@@ -2,11 +2,9 @@ import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 
 import HeaderContainer from '../containers/HeaderContainer'
+import SurveyContainer from '../containers/SurveyContainer'
 import Landing from './Landing'
-
-// Dummy components
-const Dashboard = () => <h1>Dashboard</h1>
-const Survey = () => <h1>Create new survey</h1>
+import Dashboard from './Dashboard'
 
 const App = () => (
   <div className="container">
@@ -15,7 +13,7 @@ const App = () => (
         <HeaderContainer />
         <Route exact path="/" component={Landing} />
         <Route exact path="/surveys" component={Dashboard} />
-        <Route path="/surveys/create" component={Survey} />
+        <Route path="/surveys/create" component={SurveyContainer} />
       </div>
     </BrowserRouter >
   </div>

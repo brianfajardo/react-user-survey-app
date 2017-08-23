@@ -8,7 +8,7 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
 const surveyRoutes = (app) => {
 
-  app.get('/surveys/thanks', (req, res) => res.send('Thank you. We appreciate your feedback! 😄').status(200))
+  app.get('/surveys/thanks', (req, res) => res.send('Thank you. We appreciate your feedback!').status(200))
 
   // Create a new survey with the use of Mailer
   // class which extends Sendgrip provided methods and API.
