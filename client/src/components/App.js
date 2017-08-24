@@ -7,16 +7,14 @@ import Landing from './Landing'
 import Dashboard from './Dashboard'
 
 const App = () => (
-  <div className="container">
-    <BrowserRouter>
-      <div>
-        <HeaderContainer />
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/surveys" component={Dashboard} />
-        <Route path="/surveys/create" component={SurveyContainer} />
-      </div>
-    </BrowserRouter >
-  </div>
+  <BrowserRouter>
+    <div className="container">
+      <HeaderContainer />
+      <Route exact path="/" component={Landing} />
+      <Route exact path="/surveys" component={Dashboard} />
+      <Route path="/surveys/create" component={SurveyContainer} />
+    </div>
+  </BrowserRouter >
 )
 
 export default App

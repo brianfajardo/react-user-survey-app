@@ -9,6 +9,7 @@
         "no-trailing-spaces": "off",
         "comma-dangle":"off",
         "import/prefer-default-export": "off",
-        "react/prefer-stateless-function": "off"
+        "react/prefer-stateless-function": "off",
+        "class-methods-use-this":"off"
     }
 }
