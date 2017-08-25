@@ -6,12 +6,7 @@ import 'materialize-css/dist/css/materialize.min.css'
 import App from './components/App'
 import configureStore from './store/configureStore'
 
-// Temporary development helpers.
-import axios from 'axios'
-window.axios = axios
-
-
-const store = configureStore()
+export const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>

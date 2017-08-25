@@ -1,4 +1,4 @@
-import { FETCH_USER } from '../constants/ACTION_TYPES'
+import { FETCH_USER } from '../constants/actionTypes'
 
 // Three states of auth:
 // 1. Default null state; component re-render is idle in whether user is already auth'd or not.

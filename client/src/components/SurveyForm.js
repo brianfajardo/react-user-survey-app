@@ -1,23 +1,18 @@
 import React, { Component } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, reset } from 'redux-form'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 
 import SurveyField from '../components/SurveyField'
 import validateEmails from '../utils/validateEmails'
-
-const FIELDS = [
-  { label: 'Title', name: 'title' },
-  { label: 'Subject', name: 'subject' },
-  { label: 'Body', name: 'body' },
-  { label: 'Recipient list', name: 'emails' }
-]
+import surveyFields from '../constants/surveyFields'
+import { store } from '../'
 
 class SurveyForm extends Component {
 
   renderField() {
-    return _.map(FIELDS, ({ label, name }) => (
+    return _.map(surveyFields, ({ label, name }) => (
       <Field
         type="text"
         label={label}
@@ -29,13 +24,17 @@ class SurveyForm extends Component {
   }
 
   render() {
-    const { handleSubmit, onSurveySubmit } = this.props
+    const { handleSubmit, onSurveyNext } = this.props
     return (
       <div>
         <h4 className="center">New Survey</h4>
-        <form onSubmit={handleSubmit(onSurveySubmit)}>
+        <form onSubmit={handleSubmit(onSurveyNext)}>
           {this.renderField()}
-          <Link to="/surveys" className="red btn-flat left white-text">
+          <Link
+            to="/surveys"
+            onClick={() => store.dispatch(reset('survey'))}
+            className="red btn-flat left white-text"
+          >
             Cancel
           </Link>
           <button type="submit" className="blue btn-flat right white-text">
@@ -50,13 +49,13 @@ class SurveyForm extends Component {
 
 SurveyForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  onSurveySubmit: PropTypes.func.isRequired
+  onSurveyNext: PropTypes.func.isRequired
 }
 
 const validate = (values) => {
   const errors = {}
   errors.emails = validateEmails(values.emails || '')
-  _.each(FIELDS, ({ name }) => {
+  _.each(surveyFields, ({ name }) => {
     if (!values[name] || values[name] === '') {
       errors[name] = 'Required'
     }
@@ -66,5 +65,6 @@ const validate = (values) => {
 
 export default reduxForm({
   validate,
-  form: 'survey'
+  form: 'survey',
+  destroyOnUnmount: false
 })(SurveyForm)
