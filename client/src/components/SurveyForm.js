@@ -9,6 +9,8 @@ import validateEmails from '../utils/validateEmails'
 import surveyFields from '../constants/surveyFields'
 import { store } from '../'
 
+// Customizable survey fields found in constants folder.
+
 class SurveyForm extends Component {
 
   renderField() {
@@ -54,7 +56,7 @@ SurveyForm.propTypes = {
 
 const validate = (values) => {
   const errors = {}
-  errors.emails = validateEmails(values.emails || '')
+  errors.recipients = validateEmails(values.recipients || '')
   _.each(surveyFields, ({ name }) => {
     if (!values[name] || values[name] === '') {
       errors[name] = 'Required'

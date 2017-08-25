@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
+import { withRouter } from 'react-router-dom'
 
 import surveyFields from '../constants/surveyFields'
 
@@ -9,8 +10,11 @@ const SurveyFormReview = (props) => {
   const {
     form: { values },
     submitSurvey,
-    onCancel
+    onCancel,
+    history
   } = props
+
+  console.log(history)
 
   const renderReviewFields = _.map(surveyFields, ({ label, name }) => (
     <div key={name} style={{ marginBottom: '30px' }}>
@@ -29,7 +33,7 @@ const SurveyFormReview = (props) => {
         Back
       </button>
       <button
-        onClick={() => submitSurvey(values)}
+        onClick={() => submitSurvey(values, history)}
         className="green btn-flat right white-text"
       >
         Submit
@@ -42,7 +46,8 @@ const SurveyFormReview = (props) => {
 SurveyFormReview.propTypes = {
   onCancel: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
-  submitSurvey: PropTypes.func.isRequired
+  submitSurvey: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 }
 
-export default SurveyFormReview
+export default withRouter(SurveyFormReview)

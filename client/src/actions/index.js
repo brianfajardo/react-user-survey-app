@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { FETCH_USER, SUBMIT_SURVEY } from '../constants/actionTypes'
+import { FETCH_USER } from '../constants/actionTypes'
 
 export const fetchUser = () => async (dispatch) => {
   const res = await axios.get('/auth/current_user')
@@ -14,7 +14,9 @@ export const handleStripeToken = token => async (dispatch) => {
   dispatch({ type: FETCH_USER, payload: userData })
 }
 
-export const submitSurvey = (values) => {
-  console.log('* values *', values)
-  return { type: SUBMIT_SURVEY }
+export const submitSurvey = (values, history) => async (dispatch) => {
+  const res = await axios.post('/surveys/new', values)
+  const userData = res.data
+  history.push('/surveys')
+  dispatch({ type: FETCH_USER, payload: userData })
 }
