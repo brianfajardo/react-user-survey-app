@@ -29,9 +29,11 @@ class SurveyForm extends Component {
   }
 
   render() {
+    const { handleSubmit, onSurveySubmit } = this.props
     return (
       <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+        <h4 className="center">New Survey</h4>
+        <form onSubmit={handleSubmit(onSurveySubmit)}>
           {this.renderField()}
           <Link to="/surveys" className="red btn-flat left white-text">
             Cancel
@@ -46,22 +48,20 @@ class SurveyForm extends Component {
   }
 }
 
+SurveyForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  onSurveySubmit: PropTypes.func.isRequired
+}
+
 const validate = (values) => {
   const errors = {}
-
   errors.emails = validateEmails(values.emails || '')
-
   _.each(FIELDS, ({ name }) => {
     if (!values[name] || values[name] === '') {
       errors[name] = 'Required'
     }
   })
-
   return errors
-}
-
-SurveyForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
 }
 
 export default reduxForm({
