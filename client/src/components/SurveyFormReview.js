@@ -14,8 +14,6 @@ const SurveyFormReview = (props) => {
     history
   } = props
 
-  console.log(history)
-
   const renderReviewFields = _.map(surveyFields, ({ label, name }) => (
     <div key={name} style={{ marginBottom: '30px' }}>
       <label>{label}</label>
@@ -44,9 +42,9 @@ const SurveyFormReview = (props) => {
 }
 
 SurveyFormReview.propTypes = {
-  onCancel: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
   submitSurvey: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 }
 
