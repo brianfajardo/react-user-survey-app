@@ -53,32 +53,27 @@ const surveyRoutes = (app) => {
   app.post('/surveys/webhooks', (req, res) => {
 
     // Initial req.body processing.
-    // Take the event URL and extract the surveyId and choice properties.
+    // Purpose: Take the event URL and extract the surveyId and choice properties.
+    // New parser object, delegate URL params.
+    // Allocates parsed URL properties to above instructions.
+    // If surveyId or selected URL params are not provided,
+    // p.test(pathname) returns null. Falsey matches will be discarded.
 
-    const events = _.map(req.body, ({ url, email }) => {
-      const pathName = new URL(url).pathname
+    const events = _.chain(req.body)
+      .map(({ url, email }) => {
+        const pathName = new URL(url).pathname
+        const p = new Path('/surveys/:surveyId/:selected')
+        const match = p.test(pathName)
+        if (match) {
+          return { email, surveyId: match.surveyId, choice: match.selected }
+        }
+        return null
+      })
+      .compact() // Returns only event objects, removes undefined.
+      .uniqBy('email', 'surveyId') // Removes email and surveyId duplicates.
+      .value()
 
-      // New parser object, give the string instructions
-      const p = new Path('/surveys/:surveyId/:selected')
-
-      // Allocates parsed URL properties to above instructions.
-      // If surveyId or selected URL params are not provided,
-      // p.test(pathname) returns null. Falsey matches will be discarded.
-      const match = p.test(pathName)
-      if (match) {
-        return { email, surveyId: match.surveyId, choice: match.selected }
-      }
-
-      return null
-    })
-
-    // Returns only event objects, removes undefined.
-    const compactEvents = _.compact(events)
-
-    // Removes email and surveyId duplicates.
-    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId')
-
-    console.log(uniqueEvents)
+    console.log(events)
 
     res.send({})
   })
