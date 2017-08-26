@@ -21,6 +21,7 @@ class HeaderContainer extends Component {
         return <li><a href="/auth/google">Login with Google+</a></li>
       default:
         return [
+          <li key="0"><Link to="/surveys">Dashboard</Link></li>,
           <li key="1">
             <StripePayment handleStripeToken={handleStripeToken} />
           </li>,

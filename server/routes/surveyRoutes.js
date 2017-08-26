@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
-const requireLogin = require('../middleware/requireLogin')
-const requireCredits = require('../middleware/requireCredits')
+const _ = require('lodash')
+const Path = require('path-parser')
+const { URL } = require('url')
 
 const Survey = mongoose.model('survey')
+const requireLogin = require('../middleware/requireLogin')
+const requireCredits = require('../middleware/requireCredits')
 const Mailer = require('../services/Mailer')
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
@@ -16,8 +19,10 @@ const surveyRoutes = (app) => {
   app.post('/surveys/new', requireLogin, requireCredits, async (req, res) => {
     const { user } = req
     const { title, subject, body, recipients } = req.body
+
     // Transform the string list of emails to an array of objects.
     const recipientsArrayOfObjects = recipients.split(',').map(email => ({ email: email.trim() }))
+
     const survey = new Survey({
       title,
       subject,
@@ -26,8 +31,10 @@ const surveyRoutes = (app) => {
       _user: req.user.id,
       dateSent: Date.now(),
     })
+
     // Initialize survey details with survey template.
     const mailer = new Mailer(survey, surveyTemplate(survey))
+
     try {
       await mailer.send()
       await survey.save()
@@ -41,10 +48,38 @@ const surveyRoutes = (app) => {
 
   // ngrok used for webhook local tunnel.
   // In dev, start server and go to http://localhost:4040
-  // to view ngrok provided tunnel.
+  // to view ngrok provided URL tunnel.
 
   app.post('/surveys/webhooks', (req, res) => {
-    console.log(req.body)
+
+    // Initial req.body processing.
+    // Take the event URL and extract the surveyId and choice properties.
+
+    const events = _.map(req.body, ({ url, email }) => {
+      const pathName = new URL(url).pathname
+
+      // New parser object, give the string instructions
+      const p = new Path('/surveys/:surveyId/:selected')
+
+      // Allocates parsed URL properties to above instructions.
+      // If surveyId or selected URL params are not provided,
+      // p.test(pathname) returns null. Falsey matches will be discarded.
+      const match = p.test(pathName)
+      if (match) {
+        return { email, surveyId: match.surveyId, choice: match.selected }
+      }
+
+      return null
+    })
+
+    // Returns only event objects, removes undefined.
+    const compactEvents = _.compact(events)
+
+    // Removes email and surveyId duplicates.
+    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId')
+
+    console.log(uniqueEvents)
+
     res.send({})
   })
 }

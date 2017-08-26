@@ -1,6 +1,6 @@
 const { redirectDomain } = require('../../configs/keys')
 
-const surveyTemplate = ({ body }) => `
+const surveyTemplate = ({ body, id }) => `
   <html>
     <body>
       <div style="text-align: center">
@@ -8,10 +8,10 @@ const surveyTemplate = ({ body }) => `
         <p>Please answer the following question:</p>
         <p>${body}</p>
         <div>
-          <a href="${redirectDomain}/surveys/thanks">Yes</a>
+          <a href="${redirectDomain}/surveys/${id}/yes">Yes</a>
         </div>
         <div>
-          <a href="${redirectDomain}/surveys/thanks">No</a>
+          <a href="${redirectDomain}/surveys/${id}/no">No</a>
         </div>
       </div>
     </body>
