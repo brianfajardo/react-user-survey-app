@@ -11,7 +11,7 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
 const surveyRoutes = (app) => {
 
-  app.get('/surveys/thanks', (req, res) => res.send('Thank you. We appreciate your feedback!').status(200))
+  app.get('/surveys/:surveyId/:choice', (req, res) => res.send('Thank for voting! We appreciate your feedback 🎉').status(200))
 
   // Create a new survey with the use of Mailer
   // class which extends Sendgrip provided methods and API.
@@ -29,7 +29,7 @@ const surveyRoutes = (app) => {
       body,
       recipients: recipientsArrayOfObjects,
       _user: req.user.id,
-      dateSent: Date.now(),
+      dateSent: Date.now()
     })
 
     // Initialize survey details with survey template.
@@ -59,21 +59,34 @@ const surveyRoutes = (app) => {
     // If surveyId or selected URL params are not provided,
     // p.test(pathname) returns null. Falsey matches will be discarded.
 
-    const events = _.chain(req.body)
+    _.chain(req.body)
       .map(({ url, email }) => {
         const pathName = new URL(url).pathname
-        const p = new Path('/surveys/:surveyId/:selected')
+        const p = new Path('/surveys/:surveyId/:choice')
         const match = p.test(pathName)
+
         if (match) {
-          return { email, surveyId: match.surveyId, choice: match.selected }
+          return { email, surveyId: match.surveyId, choice: match.choice }
         }
+
         return null
       })
       .compact() // Returns only event objects, removes undefined.
       .uniqBy('email', 'surveyId') // Removes email and surveyId duplicates.
+      .each(({ surveyId, email, choice }) =>
+        Survey.updateOne({
+          _id: surveyId,
+          recipients: {
+            $elemMatch: { email, responded: false }
+          }
+        }, {
+          $inc: { [choice]: 1 },
+          // '$' matches the exact recipient found in the original $elemMatch query.
+          $set: { 'recipients.$.responded': true },
+          latestResponse: new Date()
+        }).exec() // execute query
+      )
       .value()
-
-    console.log(events)
 
     res.send({})
   })

@@ -8,11 +8,11 @@ const surveySchema = new Schema({
   subject: String,
   body: String,
   recipients: [recipientSchema],
-  yesCount: {
+  yes: {
     type: Number,
     default: 0,
   },
-  noCount: {
+  no: {
     type: Number,
     default: 0,
   },
