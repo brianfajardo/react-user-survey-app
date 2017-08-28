@@ -6,6 +6,10 @@ import 'materialize-css/dist/css/materialize.min.css'
 import App from './components/App'
 import configureStore from './store/configureStore'
 
+// Dev only axios helpers.
+import axios from 'axios'
+window.axios = axios
+
 export const store = configureStore()
 
 ReactDOM.render(

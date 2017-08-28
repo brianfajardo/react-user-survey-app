@@ -11,7 +11,13 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate')
 
 const surveyRoutes = (app) => {
 
-  app.get('/surveys/:surveyId/:choice', (req, res) => res.send('Thank for voting! We appreciate your feedback 🎉').status(200))
+  app.get('/surveys', requireLogin, async (req, res) => {
+    const surveys = await Survey.find({ _user: req.user.id }).select({ recipients: false })
+
+    if (!surveys) { res.send({ message: 'User has not created any surveys!' }) }
+
+    res.send(surveys).status(200)
+  })
 
   // Create a new survey with the use of Mailer
   // class which extends Sendgrip provided methods and API.
@@ -50,7 +56,7 @@ const surveyRoutes = (app) => {
   // In dev, start server and go to http://localhost:4040
   // to view ngrok provided URL tunnel.
 
-  app.post('/surveys/webhooks', (req, res) => {
+  app.post('/surveys/webhooks', (req) => {
 
     // Initial req.body processing.
     // Purpose: Take the event URL and extract the surveyId and choice properties.
@@ -80,16 +86,15 @@ const surveyRoutes = (app) => {
             $elemMatch: { email, responded: false }
           }
         }, {
-          $inc: { [choice]: 1 },
-          // '$' matches the exact recipient found in the original $elemMatch query.
-          $set: { 'recipients.$.responded': true },
-          latestResponse: new Date()
-        }).exec() // execute query
-      )
+            $inc: { [choice]: 1 },
+            // '$' matches the exact recipient found in the original $elemMatch query.
+            $set: { 'recipients.$.responded': true },
+            latestResponse: new Date()
+          }).exec()) // execute query
       .value()
-
-    res.send({})
   })
+
+  app.get('/surveys/:surveyId/:choice', (req, res) => res.send('Thank for voting! We appreciate your feedback 🎉').status(200))
 }
 
 module.exports = surveyRoutes
