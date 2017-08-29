@@ -21,7 +21,7 @@ class HeaderContainer extends Component {
         return <li><a href="/auth/google">Login with Google+</a></li>
       default:
         return [
-          <li key="0"><Link to="/surveys">Dashboard</Link></li>,
+          <li key="0"><Link to="/dashboard">Dashboard</Link></li>,
           <li key="1">
             <StripePayment handleStripeToken={handleStripeToken} />
           </li>,
@@ -36,7 +36,7 @@ class HeaderContainer extends Component {
       <nav>
         <div className="nav-wrapper">
           <Link
-            to={this.props.auth ? '/surveys' : '/'}
+            to={this.props.auth ? '/dashboard' : '/'}
             className="brand-logo left"
           >
             React Surveys

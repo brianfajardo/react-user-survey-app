@@ -33,7 +33,7 @@ class SurveyForm extends Component {
         <form onSubmit={handleSubmit(onSurveyNext)}>
           {this.renderField()}
           <Link
-            to="/surveys"
+            to="/dashboard"
             onClick={() => store.dispatch(reset('survey'))}
             className="red btn-flat left white-text"
           >

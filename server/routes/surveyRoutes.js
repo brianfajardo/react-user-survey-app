@@ -86,15 +86,15 @@ const surveyRoutes = (app) => {
             $elemMatch: { email, responded: false }
           }
         }, {
-            $inc: { [choice]: 1 },
-            // '$' matches the exact recipient found in the original $elemMatch query.
-            $set: { 'recipients.$.responded': true },
-            latestResponse: new Date()
-          }).exec()) // execute query
+          $inc: { [choice]: 1 },
+          // '$' matches the exact recipient found in the original $elemMatch query.
+          $set: { 'recipients.$.responded': true },
+          latestResponse: new Date()
+        }).exec()) // execute query
       .value()
   })
 
-  app.get('/surveys/:surveyId/:choice', (req, res) => res.send('Thank for voting! We appreciate your feedback 🎉').status(200))
+  app.get('/surveys/:surveyId/:choice', (req, res) => res.send('Thanks for voting! We appreciate your feedback 🎉').status(200))
 }
 
 module.exports = surveyRoutes

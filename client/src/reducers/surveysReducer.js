@@ -11,4 +11,4 @@ const surveysReducer = (state = initialState, action) => {
   }
 }
 
-module.exports = surveysReducer
+export default surveysReducer

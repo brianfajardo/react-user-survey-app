@@ -24,7 +24,7 @@ export const handleStripeToken = token => async (dispatch) => {
 export const submitSurvey = (values, history) => async (dispatch) => {
   const res = await axios.post('/surveys/new', values)
   const userData = res.data
-  history.push('/surveys')
+  history.push('/dashboard')
   dispatch(reset('survey'))
   dispatch({ type: FETCH_USER, payload: userData })
 }
