@@ -17,7 +17,7 @@ class DashboardContainer extends Component {
     if (surveys.length === 0 && credits === 0) {
       return (
         <div>
-          <h2>Let's get you started!</h2>
+          <h2>{"Let's"} get you started!</h2>
           <p className="center">
             First purchase credits. Once credits have been added,
             click on the blue button to create a new survey.
